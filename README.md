@@ -1,139 +1,172 @@
 # Team Task Manager
 
-A full-stack collaborative task management app inspired by Trello and Asana. Users can sign up, create projects, invite members, assign tasks, update progress, and view dashboard analytics.
+Team Task Manager is a full-stack web application for managing projects, team members, and tasks. It supports authentication, project-based roles, task assignment, status tracking, and a dashboard for project progress.
+
+Live App: https://team-task-manager-production-0ea7.up.railway.app
+
+GitHub Repository: https://github.com/RanjeetSingh0403/team-task-manager
+
+## Features
+
+- User signup and login
+- JWT-based authentication
+- Create and manage projects
+- Project roles: Admin and Member
+- Admin can add and remove project members
+- Admin can create, assign, update, and delete tasks
+- Members can view and update their assigned tasks
+- Task status: To Do, In Progress, Done
+- Task priority: Low, Medium, High
+- Dashboard with:
+  - Total tasks
+  - Tasks by status
+  - Tasks per user
+  - Overdue tasks
 
 ## Tech Stack
 
 - Frontend: React, Vite, React Router, Axios
 - Backend: Node.js, Express.js
-- Database: PostgreSQL with `pg`
-- Authentication: JWT with bcrypt password hashing
+- Database: PostgreSQL
+- Authentication: JWT, bcrypt
 - Deployment: Railway
 
-## Features
+## Project Structure
 
-- User signup and login
-- JWT-protected REST APIs
-- Project creation
-- Project admin/member roles
-- Add and remove project members
-- Task creation with title, description, due date, priority, assignee, and status
-- Role-based access control
-- Dashboard with total tasks, task status counts, tasks per user, and overdue tasks
-
-## API Overview
-
-All protected routes require:
-
-```http
-Authorization: Bearer <jwt-token>
+```text
+team-task-manager/
+  client/
+    src/
+      api/
+      pages/
+      state/
+      ui/
+      utils/
+  server/
+    src/
+      controllers/
+      middleware/
+      routes/
+      utils/
 ```
-
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| POST | `/api/auth/signup` | Create user account |
-| POST | `/api/auth/login` | Login and receive JWT |
-| GET | `/api/auth/me` | Get logged-in user |
-| GET | `/api/projects` | List projects for logged-in user |
-| POST | `/api/projects` | Create project as Admin |
-| GET | `/api/projects/:projectId` | Get project details |
-| POST | `/api/projects/:projectId/members` | Admin adds member |
-| DELETE | `/api/projects/:projectId/members/:userId` | Admin removes member |
-| GET | `/api/projects/:projectId/tasks` | List project tasks |
-| GET | `/api/projects/:projectId/dashboard` | Get dashboard metrics |
-| POST | `/api/tasks` | Admin creates task |
-| PATCH | `/api/tasks/:taskId` | Admin edits task, Member updates assigned task status |
-| DELETE | `/api/tasks/:taskId` | Admin deletes task |
 
 ## Local Setup
 
-1. Install dependencies:
+Install dependencies:
 
 ```bash
 npm run install:all
 ```
 
-2. Create `server/.env`:
+Create `server/.env`:
 
 ```env
 PORT=5000
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/team_task_manager
-JWT_SECRET=replace-with-a-long-secret
+DATABASE_URL=your_postgresql_database_url
+JWT_SECRET=your_jwt_secret
 CLIENT_URL=http://localhost:5173
 ```
 
-3. Create `client/.env`:
+Create `client/.env`:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-4. Run the app in two PowerShell windows:
+Run backend:
 
 ```powershell
-cd "E:\Team Task Manager\server"
+cd server
 npm run dev
 ```
 
+Run frontend in another terminal:
+
 ```powershell
-cd "E:\Team Task Manager\client"
+cd client
 npm run dev
 ```
 
-Frontend: `http://localhost:5173`
+Frontend runs on:
 
-Backend: `http://localhost:5000`
+```text
+http://localhost:5173
+```
+
+Backend runs on:
+
+```text
+http://localhost:5000
+```
+
+## API Routes
+
+Protected routes require this header:
+
+```http
+Authorization: Bearer <token>
+```
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| POST | `/api/auth/signup` | Register a new user |
+| POST | `/api/auth/login` | Login user |
+| GET | `/api/auth/me` | Get logged-in user |
+| GET | `/api/projects` | Get user projects |
+| POST | `/api/projects` | Create project |
+| GET | `/api/projects/:projectId` | Get project details |
+| POST | `/api/projects/:projectId/members` | Add project member |
+| DELETE | `/api/projects/:projectId/members/:userId` | Remove project member |
+| GET | `/api/projects/:projectId/tasks` | Get project tasks |
+| GET | `/api/projects/:projectId/dashboard` | Get dashboard data |
+| POST | `/api/tasks` | Create task |
+| PATCH | `/api/tasks/:taskId` | Update task |
+| DELETE | `/api/tasks/:taskId` | Delete task |
+
+## Database Tables
+
+- `app_users`
+- `projects`
+- `project_members`
+- `tasks`
+
+The backend creates these tables automatically when the server starts.
 
 ## Railway Deployment
 
-1. Push this repository to GitHub.
-2. Create a new Railway project from your GitHub repository.
-3. Add a PostgreSQL database on Railway.
-4. Add these environment variables in Railway:
+The project is deployed on Railway with PostgreSQL.
+
+Required environment variables:
 
 ```env
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-JWT_SECRET=your-production-secret
+DATABASE_URL=your_railway_postgres_url
+JWT_SECRET=your_jwt_secret
 NODE_ENV=production
-CLIENT_URL=https://your-railway-app-url
+CLIENT_URL=your_railway_app_url
 ```
 
-5. Railway should use:
+Build command:
 
 ```bash
 npm run build
+```
+
+Start command:
+
+```bash
 npm start
 ```
 
-The Express server serves the built React frontend in production.
+In production, Express serves the built React frontend from `client/dist`.
 
-## Demo Video Guide
+## Demo Flow
 
-Show the following in 2-5 minutes:
+For testing or demo:
 
-1. Signup and login.
-2. Create a project as an Admin.
-3. Add a member by email.
-4. Create and assign tasks.
-5. Login as Member and update assigned task status.
-6. Show the dashboard counts and overdue task section.
-7. Explain backend routes, SQL tables, JWT auth, and role checks.
-
-Suggested script:
-
-```text
-Hi, this is my Team Task Manager full-stack application.
-It uses React on the frontend, Express on the backend, PostgreSQL for data storage, and JWT for authentication.
-
-First I will create an account and log in. After login, I can create a project. The creator automatically becomes the project Admin.
-
-Inside the project, the Admin can add members by email, create tasks, assign tasks to project members, choose priority and due date, and manage task status.
-
-The dashboard shows total tasks, tasks by status, tasks per user, and overdue tasks.
-
-Role-based access is enforced in the backend. Admins can manage users and tasks. Members can only view and update tasks assigned to them.
-
-The backend is organized into controllers, routes, middleware, and a SQL database utility. PostgreSQL stores users, projects, project members, and tasks with proper relationships.
-
-The project is Railway-ready. Environment variables are used for the PostgreSQL database URL, JWT secret, client URL, and production mode.
-```
+1. Signup as an admin user.
+2. Create a project.
+3. Signup another user.
+4. Add the second user to the project by email.
+5. Create and assign tasks.
+6. Update task status.
+7. Check dashboard counts and overdue tasks.

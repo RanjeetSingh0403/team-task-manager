@@ -16,6 +16,23 @@ body {
   min-height: 100vh;
 }
 
+body::after {
+  content: "Made by Ranjeet Singh";
+  position: fixed;
+  right: 14px;
+  bottom: 10px;
+  z-index: 1000;
+  pointer-events: none;
+  border: 1px solid rgba(40, 112, 95, 0.18);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: rgba(23, 32, 38, 0.68);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 button,
 input,
 textarea,

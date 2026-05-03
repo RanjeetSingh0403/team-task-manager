@@ -1,5 +1,5 @@
 import { CalendarClock, CheckCircle2, Trash2, UserPlus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/client.js';
 import { useAuth } from '../state/AuthContext.jsx';

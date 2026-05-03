@@ -1,5 +1,5 @@
 import { FolderKanban, Plus } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/client.js';
 import { useAuth } from '../state/AuthContext.jsx';
